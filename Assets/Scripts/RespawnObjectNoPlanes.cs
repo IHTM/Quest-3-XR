@@ -7,7 +7,9 @@ using UnityEngine.XR.ARSubsystems;
 
 public class NewBehaviourScript : MonoBehaviour
 {
- public GameObject objectPrefab;
+    //public GameObject objectPrefab;
+    public GameObject[] furniturePrefabs; // Assign prefabs in Unity Inspector
+
     public ARPlaneManager planeManager;
     public Camera playerCamera;
     public float spawnDistance = 2.0f;  // Distance in front of the camera to spawn the object
@@ -21,14 +23,14 @@ public class NewBehaviourScript : MonoBehaviour
     }
 
     // Method to be called by the UI button
-    public void OnRespawnButtonClick()
+    public void OnRespawnButtonClick(int index)
     {
         Vector3 spawnPoint = playerCamera.transform.position + playerCamera.transform.forward * spawnDistance;
         
         // Check if the spawnPoint is not on any existing planes
         if (!IsPointOnPlane(spawnPoint))
         {
-            Instantiate(objectPrefab, spawnPoint, Quaternion.identity);
+            Instantiate(furniturePrefabs[index], spawnPoint, Quaternion.identity);
             Debug.Log("Object respawned successfully!");
         }
         else

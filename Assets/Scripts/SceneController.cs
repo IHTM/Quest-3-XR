@@ -17,6 +17,9 @@ public class SceneController : MonoBehaviour
 
     [SerializeField]
     private GameObject _grabbableCouch;
+    
+    [SerializeField]
+    private GameObject _canvas;
 
     private ARPlaneManager _planeManager;
     private bool _isVisibible = true;
@@ -27,15 +30,15 @@ public class SceneController : MonoBehaviour
         _planeManager = GetComponent<ARPlaneManager>();
 
         _togglePlanesAction.action.performed += OnTogglePlanesAction;
-        _activateAction.action.performed += OnActivateAction;
+        // _activateAction.action.performed += OnActivateAction;
     }
 
-    private void OnActivateAction(InputAction.CallbackContext context)
+/*     private void OnActivateAction(InputAction.CallbackContext context)
     {
         SpawnGrabbableCouch();
-    }
+    } */
 
-    private void SpawnGrabbableCouch()
+/*     private void SpawnGrabbableCouch()
     {
         Vector3 spawnPostion;
 
@@ -49,7 +52,7 @@ public class SceneController : MonoBehaviour
             }
         }
 
-    }
+    } */
 
     private void OnPlanesChanged(ARPlanesChangedEventArgs args)
     {
@@ -58,14 +61,17 @@ public class SceneController : MonoBehaviour
 
     private void OnTogglePlanesAction(InputAction.CallbackContext context)
     {
-        _isVisibible = !_isVisibible;
+/*         _isVisibible = !_isVisibible;
         float fillAlpha = _isVisibible ? 0.3f : 0f;
-        float lineAlpha = _isVisibible ? 1.0f : 0f;
+        float lineAlpha = _isVisibible ? 1.0f : 0f; */
 
-        foreach (var plane in _planeManager.trackables)
+        _canvas.SetActive(!_canvas.activeSelf);
+ 
+
+  /*       foreach (var plane in _planeManager.trackables)
         {
             SetPlaneAlpha(plane, fillAlpha, lineAlpha);
-        }
+        } */
     }
 
     private void SetPlaneAlpha(ARPlane plane, float fillAlpha, float lineAlpha)
@@ -102,6 +108,6 @@ public class SceneController : MonoBehaviour
     void OnDestroy()
     {
         _togglePlanesAction.action.performed -= OnTogglePlanesAction;
-        _activateAction.action.performed -= OnActivateAction;
+        // _activateAction.action.performed -= OnActivateAction;
     }
 }
