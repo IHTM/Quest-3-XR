@@ -1,7 +1,14 @@
-using System.Collections;
+/* using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.XR;
+using UnityEngine.XR.ARFoundation;
+using TMPro;
+using UnityEngine.UI;
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using TMPro;
 using UnityEngine.UI;
@@ -23,10 +30,6 @@ public class MeasurementController : MonoBehaviour
 
     [SerializeField]
     private ARCameraManager arCameraManager;
-    
-    private ARSessionOrigin arOrigin;
-
-    private LineRenderer measureLine;
 
     private ARRaycastManager arRaycastManager;
 
@@ -35,15 +38,14 @@ public class MeasurementController : MonoBehaviour
     private GameObject endPoint;
 
     private Vector2 touchPosition = default;
-    
+
     private bool activated = true;
 
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
-    void Awake() 
+    void Awake()
     {
         arRaycastManager = GetComponent<ARRaycastManager>();
-        arOrigin = FindObjectOfType<ARSessionOrigin>();
 
         startPoint = Instantiate(measurementPointPrefab, Vector3.zero, Quaternion.identity);
         endPoint = Instantiate(measurementPointPrefab, Vector3.zero, Quaternion.identity);
@@ -55,19 +57,19 @@ public class MeasurementController : MonoBehaviour
 
         Debug.Log("Finished awake");
     }
-    
+
     void Update()
-    { 
-        if(activated && Input.touchCount > 0)
+    {
+        if (activated && Input.touchCount > 0)
         {
             Debug.Log("Touch detected");
             Touch touch = Input.GetTouch(0);
-            if(touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began)
             {
                 Debug.Log("Touch began");
                 touchPosition = touch.position;
 
-                if(arRaycastManager.Raycast(touchPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
+                if (arRaycastManager.Raycast(touchPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
                 {
                     Debug.Log("within plane");
                     startPoint.SetActive(true);
@@ -77,12 +79,12 @@ public class MeasurementController : MonoBehaviour
                 }
             }
 
-            if(touch.phase == TouchPhase.Moved)
+            if (touch.phase == TouchPhase.Moved)
             {
                 Debug.Log("Touch moved");
                 touchPosition = touch.position;
-                
-                if(arRaycastManager.Raycast(touchPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
+
+                if (arRaycastManager.Raycast(touchPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.PlaneWithinPolygon))
                 {
                     Debug.Log("Within plane2");
                     measureLine.gameObject.SetActive(true);
@@ -94,7 +96,7 @@ public class MeasurementController : MonoBehaviour
             }
         }
 
-        if(startPoint.activeSelf && endPoint.activeSelf)
+        if (startPoint.activeSelf && endPoint.activeSelf)
         {
             Debug.Log("Try calc distance");
             distanceText.transform.position = endPoint.transform.position + offsetMeasurement;
@@ -106,11 +108,13 @@ public class MeasurementController : MonoBehaviour
         }
     }
 
-    public void ActivateMode() {
+    public void ActivateMode()
+    {
         activated = true;
     }
 
-    public void DeactivateMode() {
+    public void DeactivateMode()
+    {
         activated = false;
     }
-}
+} */

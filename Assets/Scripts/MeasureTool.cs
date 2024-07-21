@@ -1,74 +1,90 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR.OpenXR;
+
+using UnityEngine.InputSystem.XR;
+using XRController = UnityEngine.XR.Interaction.Toolkit.XRController;
+
 using TMPro;
+
 
 public class OpenXRMeasure : MonoBehaviour
 {
-    public GameObject measurePointPrefab;
-    public TextMeshProUGUI distanceText;
-    private List<GameObject> measurePoints = new List<GameObject>();
-    private LineRenderer lineRenderer;
-    private bool isMeasuring = false;
-    private Camera arCamera;
+    ARRaycastManager aRRaycastManager;
 
+    private XRController rightController;
+
+    public GameObject[] measurePoints;
+    public GameObject reticle;
+    
+    public float distancePoints = 0f;
+
+    int currentPoint = 0;
+
+    bool placementEnabled = true;
+    
+    public TMP_Text distanceText;
+
+    public LineRenderer line;
+
+
+    // Start is called before the first frame update
     void Start()
     {
-        lineRenderer = GetComponent<LineRenderer>();
-        arCamera = Camera.main;
+        aRRaycastManager = GetComponent<ARRaycastManager>();
+        rightController = GameObject.Find("Right Controller").GetComponent<XRController>();
     }
 
+    // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 touchPosition = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            Ray ray = arCamera.ScreenPointToRay(touchPosition);
+        List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
+        aRRaycastManager.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hits, TrackableType.PlaneWithinPolygon);
+
+        if (hits.Count > 0)
+        {
+            reticle.transform.position = hits[0].pose.position;
+            reticle.transform.position = hits[0].pose.position;
+
+            if (rightController.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool rightSecondaryButtonPressed) && rightSecondaryButtonPressed)
             {
-                GameObject measurePoint = Instantiate(measurePointPrefab, hit.point, Quaternion.identity);
-                measurePoints.Add(measurePoint);
-
-                if (measurePoints.Count == 2)
+                if (currentPoint < 2)
                 {
-                    isMeasuring = true;
-                    UpdateMeasurement();
+                    // placing measure point
+                    PlacePoints(hits[0].pose.position, currentPoint);
                 }
+                placementEnabled = false;
+                
             }
+
         }
 
-        if (isMeasuring)
+        if (currentPoint > 1)
         {
-            UpdateMeasurement();
+            line.enabled = true;
+            line.SetPosition(0, measurePoints[0].transform.position);
+            line.SetPosition(1, measurePoints[1].transform.position);
         }
+
+        distancePoints = Vector3.Distance(measurePoints[0].transform.position, measurePoints[1].transform.position);
+
+        distanceText.text = distancePoints.ToString();
     }
 
-    void UpdateMeasurement()
+    public void PlacePoints(Vector3 pointPosition, int pointIndex)
     {
-        if (measurePoints.Count == 2)
-        {
-            Vector3 point1 = measurePoints[0].transform.position;
-            Vector3 point2 = measurePoints[1].transform.position;
-            float distance = Vector3.Distance(point1, point2);
+        measurePoints[pointIndex].SetActive(true);
+        measurePoints[pointIndex].transform.position = pointPosition;
 
-            distanceText.text = $"Distance: {distance:F2} meters";
-
-            lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0, point1);
-            lineRenderer.SetPosition(1, point2);
-        }
+        currentPoint++;
     }
+ 
 
-    public void ResetMeasurement()
-    {
-        foreach (var point in measurePoints)
-        {
-            Destroy(point);
-        }
-        measurePoints.Clear();
-        lineRenderer.positionCount = 0;
-        distanceText.text = "Distance: 0 meters";
-        isMeasuring = false;
-    }
+
+
+
 }
