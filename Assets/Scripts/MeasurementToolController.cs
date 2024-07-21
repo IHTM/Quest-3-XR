@@ -1,66 +1,39 @@
-/* using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Experimental.XR;
-using UnityEngine.XR.ARFoundation;
-using TMPro;
-using UnityEngine.UI;
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
-using TMPro;
-using UnityEngine.UI;
 
-[RequireComponent(typeof(ARRaycastManager))]
-public class MeasurementController : MonoBehaviour
+
+[RequireComponent(typeof(ARPlaneManager))]
+public class MeasurementToolController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject measurementPointPrefab;
+    private InputActionReference _toggleMeasureTool;
+   
+    private ARPlaneManager _arPlaneManager;
+    private bool _isVisible = true;
+    private int _numPlanesAddedOccurred = 0;
 
-    [SerializeField]
-    private float measurementFactor = 39.37f;
 
-    [SerializeField]
-    private Vector3 offsetMeasurement = Vector3.zero;
-
-    [SerializeField]
-    private TextMeshPro distanceText;
-
-    [SerializeField]
-    private ARCameraManager arCameraManager;
-
-    private ARRaycastManager arRaycastManager;
-
-    private GameObject startPoint;
-
-    private GameObject endPoint;
-
-    private Vector2 touchPosition = default;
-
-    private bool activated = true;
-
-    private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-
-    void Awake()
+    void start()
     {
-        arRaycastManager = GetComponent<ARRaycastManager>();
 
-        startPoint = Instantiate(measurementPointPrefab, Vector3.zero, Quaternion.identity);
-        endPoint = Instantiate(measurementPointPrefab, Vector3.zero, Quaternion.identity);
-        Debug.Log("Started");
-        measureLine = GetComponent<LineRenderer>();
-        Debug.Log("Passed");
-        startPoint.SetActive(false);
-        endPoint.SetActive(false);
+        Debug.Log("MeasurementController Start");
+        _arPlaneManager = GetComponent<ARPlaneManager>();
 
-        Debug.Log("Finished awake");
+        if(_arPlaneManager == null)
+        {
+            Debug.LogError("ARPlaneManager is not found : ( ");
+        }
+
+        _toggleMeasureTool.action.performed += ToggleMeasureTool;
+        _arPlaneManager.planesChanged += OnPlanesChanged;
     }
 
     void Update()
     {
-        if (activated && Input.touchCount > 0)
+ /*        if (activated && Input.touchCount > 0)
         {
             Debug.Log("Touch detected");
             Touch touch = Input.GetTouch(0);
@@ -105,16 +78,56 @@ public class MeasurementController : MonoBehaviour
             measureLine.SetPosition(1, endPoint.transform.position);
 
             distanceText.text = $"Distance: {(Vector3.Distance(startPoint.transform.position, endPoint.transform.position) * measurementFactor * 100).ToString("F2")} cm";
+        } */
+    }
+
+    public void _OnToggleMeasureToolAction()
+    {
+        _isVisible = !_isVisible;
+        float fillAlpha = _isVisible ? 0.3f : 0.0f;
+        float lineAlpha = _isVisible ? 0.9f : 0.0f;
+
+        foreach (var plane in _arPlaneManager.trackables)
+        {
+            SetPlaneAlpha(plane, fillAlpha, lineAlpha);
+        }
+
+    }
+
+    public void OnPlanesChanged()
+    {
+
+    }
+
+    private void SetPlaneAlpha(ARPlane plane, float fillAlpha, float lineAlpha)
+    {
+        var meshrenderer = plane.GetComponentInChildren<MeshRenderer>();
+        var lineRenderer = plane.GetComponentInChildren<LineRenderer>();
+
+        if(meshRenderer != null)
+        {
+            Color color = meshRenderer.material.color;
+            color.a = fillAlpha;
+            meshRenderer.material.color = color;
+        }
+
+        if(lineRenderer != null)
+        {
+            Color startColor = lineRenderer.startColor;
+            Color endColor = lineRenderer.endColor;
+
+            startColor.a = lineAlpha;
+            endColor.a = lineAlpha;
+
+            lineRenderer.startColor = startColor;
+            lineRenderer.endColor = endColor;
         }
     }
 
-    public void ActivateMode()
+    void OnDestroy()
     {
-        activated = true;
+        _toggleMeasureToolAction.action.performed -= OnTogglePlanesAction;
+        _planeManager.planesChanged -= OnPlanesChanged;
     }
 
-    public void DeactivateMode()
-    {
-        activated = false;
-    }
-} */
+}

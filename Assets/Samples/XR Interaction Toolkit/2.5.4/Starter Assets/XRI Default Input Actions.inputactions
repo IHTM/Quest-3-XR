@@ -1588,7 +1588,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SetPoint",
+                    "name": "ToggleMeasureTool",
                     "type": "Button",
                     "id": "0252e4b1-8728-4e23-90eb-c6bf2bf841b1",
                     "expectedControlType": "Button",
@@ -1781,7 +1781,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
-                    "action": "SetPoint",
+                    "action": "ToggleMeasureTool",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
