@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
@@ -7,7 +8,7 @@ using UnityEngine.XR.ARSubsystems;
 public class PlacePoint : MonoBehaviour
 {
     [SerializeField]
-    [Tooltip("Instantiates this prefab on a plane at the touch location.")]
+    private InputActionReference _setPointAction;
     private GameObject placedPrefab;
 
     private bool activated = false;
