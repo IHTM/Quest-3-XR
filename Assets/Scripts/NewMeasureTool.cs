@@ -1,119 +1,128 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.ARSubsystems;
-using System.Collections.Generic;
+using UnityEngine.XR.OpenXR;
+using UnityEngine.InputSystem;
+using XRController = UnityEngine.XR.Interaction.Toolkit.XRController;
+using TMPro;
 
 public class NewMeasureTool : MonoBehaviour
 {
-    public GameObject pointPrefab;  // Prefab für die Punkte im Raum
-    public GameObject distanceTextPrefab; // Prefab für den Text zur Distanzanzeige
+    public ARRaycastManager aRRaycastManager;
 
-    // public XRRayInteractor interactor;
-    public XRController xrController;
+    public InputActionReference toggleMeasureTool;
+
+    public float distancePoints = 0f;
+
+    public GameObject pointPrefab;
 
     private GameObject point1;
     private GameObject point2;
-    private GameObject distanceText;
 
-    private bool isFirstPointSet = false;
+    [SerializeField]
+    Transform rightController;
+    private bool isFirstPointPlaced = false;
 
+    private int pointIndex = 0;
+    private bool pointsSet = false;
+
+    public TMP_Text distanceText;
+    public LineRenderer line;
 
     void Start()
     {
-        // Finde den XRRayInteractor automatisch in der Szene
-       /*  interactor = FindObjectOfType<ARRaycastManager>();
+        // input WIP
 
-        if (aRRaycastManager == null)
-        {
-            Debug.LogError("ARRaycastManager not found in the scene. Please make sure it is added to the AR Session Origin.");
-        } */
-
-        // Finde den XRController automatisch in der Szene
-        xrController = FindObjectOfType<XRController>();
-
-        if (xrController == null)
-        {
-            Debug.LogError("XRController not found in the scene. Please make sure it is added to the controller.");
-        }
+        Debug.Log("Measure Tool Active");
+        toggleMeasureTool.action.performed += HandleControllerInput;
+        line.positionCount = 2;
+        distanceText.text = "";
     }
-
 
     void Update()
     {
-        if (xrController != null)
+        
+/*         if (pointsSet)
         {
-            // bool buttonPressed = false;
-            if (xrController.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool buttonPressed) && buttonPressed)
+
+        } */
+    }
+
+    public void HandleControllerInput(InputAction.CallbackContext context)
+    {
+        Debug.Log("Points Set");
+        SetPoint();
+    }
+
+    [ContextMenu("Set Point")]
+    void SetPoint()
+    {
+        if (pointIndex < 2)
+        {
+            Vector3 hitPosition = Vector3.zero;
+            if (TryGetHitPosition(out hitPosition))
             {
-                if (!isFirstPointSet)
+                PlacePoint(hitPosition);
+                pointIndex++;
+
+
+                if (pointIndex == 2)
                 {
-                    point1 = Instantiate(pointPrefab, xrController.transform.position, Quaternion.identity);
-                    isFirstPointSet = true;
-                }
-                else
-                {
-                    point2 = Instantiate(pointPrefab, xrController.transform.position, Quaternion.identity);
-                    DisplayDistance();
-                    isFirstPointSet = false;  // Zurücksetzen für die nächste Messung
+                    pointsSet = true;
                 }
             }
-            
-            
-            /* {
-                if (!isFirstPointSet)
-                {
-                    point1 = CreatePointAtRaycastHit();
-                    if (point1 != null)
-                    {
-                        isFirstPointSet = true;
-                        Debug.Log("First point set at: " + point1.transform.position);
-                    }
-                }
-                else
-                {
-                    point2 = CreatePointAtRaycastHit();
-                    if (point2 != null)
-                    {
-                        DisplayDistance();
-                        isFirstPointSet = false;  // Zurücksetzen für die nächste Messung
-                        Debug.Log("Second point set at: " + point2.transform.position);
-                    }
-                }
-            } */
         }
     }
 
-/*     private GameObject CreatePointAtRaycastHit()
+    bool TryGetHitPosition(out Vector3 position)
     {
         List<ARRaycastHit> hits = new List<ARRaycastHit>();
-        aRRaycastManager.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hits, TrackableType.Planes);
-
-        if (hits.Count > 0)
+        Debug.Log(aRRaycastManager);
+        if (aRRaycastManager.Raycast(new Ray(rightController.transform.position, rightController.transform.forward), hits, TrackableType.Planes))
         {
-            Pose hitPose = hits[0].pose;
-            return Instantiate(pointPrefab, hitPose.position, Quaternion.identity);
+            position = hits[0].pose.position;
+
+            return true;
         }
 
-        return null;
-    } */
+        position = Vector3.zero;
+        return false;
+    }
 
-    private void DisplayDistance()
+    void PlacePoint(Vector3 position)
     {
+        if (!isFirstPointPlaced)
+        {
+            if (point1 != null)
+            {
+                Destroy(point1);
+            }
+            point1 = Instantiate(pointPrefab, position, Quaternion.identity);
+            isFirstPointPlaced = true;
+        }
+        else
+        {
+            if (point2 != null)
+            {
+                Destroy(point2);
+            }
+            point2 = Instantiate(pointPrefab, position, Quaternion.identity);
+            
+            isFirstPointPlaced = false;
+        }
         if (point1 != null && point2 != null)
         {
-            float distance = Vector3.Distance(point1.transform.position, point2.transform.position);
-            Debug.Log("Distance: " + distance + " meters");
-
-            // Anzeigen der Distanz als Text im Raum
-            if (distanceText == null)
-            {
-                distanceText = Instantiate(distanceTextPrefab, (point1.transform.position + point2.transform.position) / 2, Quaternion.identity);
-            }
-
-            distanceText.GetComponent<TextMesh>().text = distance.ToString("F2") + " meters";
-            distanceText.transform.position = (point1.transform.position + point2.transform.position) / 2;
+            CalculateDistance();
         }
     }
+
+    void CalculateDistance()
+    {
+        distancePoints = Vector3.Distance(point1.transform.position, point2.transform.position);
+        distanceText.text = "Distance: " + distancePoints.ToString("F2") + "m";
+    }
+
+
 }

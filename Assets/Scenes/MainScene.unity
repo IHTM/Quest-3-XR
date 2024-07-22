@@ -2287,6 +2287,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 871263473}
+    - targetCorrespondingSourceObject: {fileID: 8733093507751517971, guid: 5eccbf4be2c00e94689ee8062e4e7276,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 871263480}
     - targetCorrespondingSourceObject: {fileID: 7990873191231833679, guid: 5eccbf4be2c00e94689ee8062e4e7276,
         type: 3}
       insertIndex: -1
@@ -2446,7 +2450,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 871263450}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f717b4293c2ab4044abf18a0244fa6ea, type: 3}
   m_Name: 
@@ -2476,15 +2480,33 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 871263450}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11ef989c55cf14ee0bb1dbb8f22cff39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointPrefab: {fileID: 6054453790795970552, guid: 5f4a7ce212e5642e4ab0f9391970d4de,
+  aRRaycastManager: {fileID: 871263480}
+  toggleMeasureTool: {fileID: -537251095019503087, guid: c348712bda248c246b8c49b3db54643f,
     type: 3}
-  distanceTextPrefab: {fileID: 1437209201}
-  xrController: {fileID: 0}
+  distancePoints: 0
+  pointPrefab: {fileID: 4325141730690597252, guid: f451b5e3d3f43724db894cacb08ca1db,
+    type: 3}
+  rightController: {fileID: 1550360851}
+  distanceText: {fileID: 1437209203}
+  line: {fileID: 4264744466012857749, guid: 4c371c22dc39f4bdd87a62e5cc8365a4, type: 3}
+--- !u!114 &871263480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871263450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa17d122634046b4a8e23048891fafc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RaycastPrefab: {fileID: 0}
 --- !u!1 &885459786
 GameObject:
   m_ObjectHideFlags: 0
@@ -4473,6 +4495,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491989549}
   m_CullTransparentMesh: 1
+--- !u!4 &1550360851 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7990873191126656719, guid: 5eccbf4be2c00e94689ee8062e4e7276,
+    type: 3}
+  m_PrefabInstance: {fileID: 871263446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1604203736
 GameObject:
   m_ObjectHideFlags: 0
