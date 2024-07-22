@@ -1,90 +1,64 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
-using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.ARSubsystems;
-using UnityEngine.XR.OpenXR;
+using UnityEngine.InputSystem;
 
-using UnityEngine.InputSystem.XR;
-using XRController = UnityEngine.XR.Interaction.Toolkit.XRController;
-
-using TMPro;
-
-
-public class OpenXRMeasure : MonoBehaviour
+public class MeasureTool : MonoBehaviour
 {
-    ARRaycastManager aRRaycastManager;
+    public GameObject pointPrefab;
+    public InputActionReference placePointAction;
+    private GameObject point1;
+    private GameObject point2;
+    private bool isFirstPointPlaced = false;
 
-    private XRController rightController;
-
-    public GameObject[] measurePoints;
-    public GameObject reticle;
-    
-    public float distancePoints = 0f;
-
-    int currentPoint = 0;
-
-    bool placementEnabled = true;
-    
-    public TMP_Text distanceText;
-
-    public LineRenderer line;
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        aRRaycastManager = GetComponent<ARRaycastManager>();
-        rightController = GameObject.Find("Right Controller").GetComponent<XRController>();
+        placePointAction.action.performed += OnPlacePoint;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        List<ARRaycastHit> hits = new List<ARRaycastHit>();
+        placePointAction.action.performed -= OnPlacePoint;
+    }
 
-        aRRaycastManager.Raycast(new Vector2(Screen.width / 2, Screen.height / 2), hits, TrackableType.PlaneWithinPolygon);
+    private void OnPlacePoint(InputAction.CallbackContext context)
+    {
+        PlacePoint();
+    }
 
-        if (hits.Count > 0)
+    void PlacePoint()
+    {
+        Vector3 controllerPosition = GetControllerPosition();
+
+        if (!isFirstPointPlaced)
         {
-            reticle.transform.position = hits[0].pose.position;
-            reticle.transform.position = hits[0].pose.position;
-
-            if (rightController.inputDevice.TryGetFeatureValue(CommonUsages.secondaryButton, out bool rightSecondaryButtonPressed) && rightSecondaryButtonPressed)
-            {
-                if (currentPoint < 2)
-                {
-                    // placing measure point
-                    PlacePoints(hits[0].pose.position, currentPoint);
-                }
-                placementEnabled = false;
-                
-            }
-
+            point1 = Instantiate(pointPrefab, controllerPosition, Quaternion.identity);
+            isFirstPointPlaced = true;
         }
-
-        if (currentPoint > 1)
+        else
         {
-            line.enabled = true;
-            line.SetPosition(0, measurePoints[0].transform.position);
-            line.SetPosition(1, measurePoints[1].transform.position);
+            point2 = Instantiate(pointPrefab, controllerPosition, Quaternion.identity);
+            CalculateDistance();
+            isFirstPointPlaced = false;
         }
-
-        distancePoints = Vector3.Distance(measurePoints[0].transform.position, measurePoints[1].transform.position);
-
-        distanceText.text = distancePoints.ToString();
     }
 
-    public void PlacePoints(Vector3 pointPosition, int pointIndex)
+    Vector3 GetControllerPosition()
     {
-        measurePoints[pointIndex].SetActive(true);
-        measurePoints[pointIndex].transform.position = pointPosition;
+        // Hier erhalten Sie die Position des Controllers direkt aus dem Input-System.
+        // Dies ist ein Platzhalter, da die genaue Methode davon abhängt, wie Ihr XR-Rig konfiguriert ist.
+        // Zum Beispiel könnte dies eine Kamera sein, die die Position des Controllers verfolgt.
+        // Hier ein Beispiel, das möglicherweise angepasst werden muss:
 
-        currentPoint++;
+        Transform cameraTransform = Camera.main.transform;
+        return cameraTransform.position + cameraTransform.forward * 0.5f; // Platzhalter-Position vor der Kamera
     }
- 
 
-
-
-
+    void CalculateDistance()
+    {
+        if (point1 != null && point2 != null)
+        {
+            float distance = Vector3.Distance(point1.transform.position, point2.transform.position);
+            Debug.Log("Abstand zwischen den Punkten: " + distance + " Meter");
+            // Optional: Zeigen Sie den Abstand im UI an
+        }
+    }
 }
