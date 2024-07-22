@@ -10,44 +10,50 @@ using TMPro;
 
 public class NewMeasureTool : MonoBehaviour
 {
-    public ARRaycastManager aRRaycastManager;
+    [SerializeField]
+    ARRaycastManager aRRaycastManager;
 
-    public InputActionReference toggleMeasureTool;
+    [SerializeField]
+    InputActionReference toggleMeasureTool;
 
-    public float distancePoints = 0f;
-
-    public GameObject pointPrefab;
-
-    private GameObject point1;
-    private GameObject point2;
+    [SerializeField]
+    GameObject pointPrefab;
 
     [SerializeField]
     Transform rightController;
+
+    [SerializeField]
+    TMP_Text distanceText;
+    
+    [SerializeField]
+    LineRenderer line;
+
+    private GameObject point1;
+    private GameObject point2;
+    
+    public float distancePoints = 0f;
+
     private bool isFirstPointPlaced = false;
 
     private int pointIndex = 0;
     private bool pointsSet = false;
 
-    public TMP_Text distanceText;
-    public LineRenderer line;
 
     void Start()
     {
-        // input WIP
-
         Debug.Log("Measure Tool Active");
         toggleMeasureTool.action.performed += HandleControllerInput;
-        line.positionCount = 2;
+        //line.positionCount = 2;
         distanceText.text = "";
     }
 
     void Update()
     {
-        
-/*         if (pointsSet)
+        if (pointsSet)
         {
+            DrawLine();
 
-        } */
+        }
     }
 
     public void HandleControllerInput(InputAction.CallbackContext context)
@@ -66,7 +72,7 @@ public class NewMeasureTool : MonoBehaviour
             {
                 PlacePoint(hitPosition);
                 pointIndex++;
-
+                Debug.Log($"Point {pointIndex} set at {hitPosition}");
 
                 if (pointIndex == 2)
                 {
@@ -83,7 +89,7 @@ public class NewMeasureTool : MonoBehaviour
         if (aRRaycastManager.Raycast(new Ray(rightController.transform.position, rightController.transform.forward), hits, TrackableType.Planes))
         {
             position = hits[0].pose.position;
-
+            Debug.Log($"Hit position: {position}");
             return true;
         }
 
@@ -91,6 +97,7 @@ public class NewMeasureTool : MonoBehaviour
         return false;
     }
 
+    [ContextMenu("Place Point")]
     void PlacePoint(Vector3 position)
     {
         if (!isFirstPointPlaced)
@@ -101,6 +108,8 @@ public class NewMeasureTool : MonoBehaviour
             }
             point1 = Instantiate(pointPrefab, position, Quaternion.identity);
             isFirstPointPlaced = true;
+            Debug.Log("First point placed");
+
         }
         else
         {
@@ -111,17 +120,36 @@ public class NewMeasureTool : MonoBehaviour
             point2 = Instantiate(pointPrefab, position, Quaternion.identity);
             
             isFirstPointPlaced = false;
+            Debug.Log("Second point placed");
         }
+
         if (point1 != null && point2 != null)
         {
             CalculateDistance();
         }
     }
 
+    [ContextMenu("Calculate Distance")]
     void CalculateDistance()
     {
         distancePoints = Vector3.Distance(point1.transform.position, point2.transform.position);
-        distanceText.text = "Distance: " + distancePoints.ToString("F2") + "m";
+        distanceText.text = distancePoints.ToString();
+        Debug.Log($"Distance calculated: {distancePoints * 100} cm");
+    }
+
+    [ContextMenu("Draw Line")]
+    void DrawLine()
+    {
+        if (point1 != null && point2 != null)
+        {
+            Debug.Log("Drawing line between points");
+            line.SetPosition(0, point1.transform.position);
+            line.SetPosition(1, point2.transform.position);
+        }
+        else
+        {
+            Debug.Log("Points are not set correctly");
+        }
     }
 
 
