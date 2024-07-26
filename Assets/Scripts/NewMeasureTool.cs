@@ -24,26 +24,24 @@ public class NewMeasureTool : MonoBehaviour
 
     [SerializeField]
     TMP_Text distanceText;
-    
+
     [SerializeField]
-    LineRenderer line;
+    LineRenderer distanceLine;
 
     private GameObject point1;
     private GameObject point2;
-    
-    public float distancePoints = 0f;
+
+    private float distancePoints = 0f;
 
     private bool isFirstPointPlaced = false;
 
     private int pointIndex = 0;
     private bool pointsSet = false;
 
-
     void Start()
     {
         Debug.Log("Measure Tool Active");
         toggleMeasureTool.action.performed += HandleControllerInput;
-        //line.positionCount = 2;
         distanceText.text = "";
     }
 
@@ -52,7 +50,6 @@ public class NewMeasureTool : MonoBehaviour
         if (pointsSet)
         {
             DrawLine();
-
         }
     }
 
@@ -118,7 +115,7 @@ public class NewMeasureTool : MonoBehaviour
                 Destroy(point2);
             }
             point2 = Instantiate(pointPrefab, position, Quaternion.identity);
-            
+
             isFirstPointPlaced = false;
             Debug.Log("Second point placed");
         }
@@ -129,7 +126,6 @@ public class NewMeasureTool : MonoBehaviour
         }
     }
 
-    [ContextMenu("Calculate Distance")]
     void CalculateDistance()
     {
         distancePoints = Vector3.Distance(point1.transform.position, point2.transform.position);
@@ -143,14 +139,24 @@ public class NewMeasureTool : MonoBehaviour
         if (point1 != null && point2 != null)
         {
             Debug.Log("Drawing line between points");
-            line.SetPosition(0, point1.transform.position);
-            line.SetPosition(1, point2.transform.position);
+
+            if (distanceLine == null)
+            {
+                distanceLine = gameObject.AddComponent<LineRenderer>();
+                distanceLine.positionCount = 2;
+                distanceLine.startWidth = 0.05f;
+                distanceLine.endWidth = 0.05f;
+                distanceLine.material = new Material(Shader.Find("Sprites/Default"));
+                distanceLine.startColor = Color.red;
+                distanceLine.endColor = Color.red;
+            }
+
+            distanceLine.SetPosition(0, point1.transform.position);
+            distanceLine.SetPosition(1, point2.transform.position);
         }
         else
         {
             Debug.Log("Points are not set correctly");
         }
     }
-
-
 }

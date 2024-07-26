@@ -22,8 +22,7 @@ public class SceneController : MonoBehaviour
     private GameObject _canvas;
 
     private ARPlaneManager _planeManager;
-    private bool _isVisibible = true;
-
+    
     // Start is called before the first frame update
     void Start()
     {
