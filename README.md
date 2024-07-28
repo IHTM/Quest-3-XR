@@ -6,8 +6,8 @@ Das FurPro-Projekt ist eine umfassende XR-Softwarelösung, die darauf abzielt, V
 ## Beitrag
 - Dieses Projekt wurde collaborativ von Ahmed Abouismail und Hieu Tran Minh erstellt.
   Beide Mitglieder haben nach Packages recherchiert, die für das Projekt von bedeutung sein können und sind fundig geworden, dass OVR SDK und Meta XR All-in-One SDK essenzielle   Funktionen veraltet sind.
-- Ahmed übernahm die Aufgabe das Menu zu erstellen
-- Hieu hat versucht ein Messstab-Feature für die physische Realität zu implementieren
+- [@Ahmed](https://github.com/ahmedAbouismail) übernahm die Aufgabe das Menu zu erstellen
+- [@Hieu](https://github.com/IHTM) hat versucht ein Messstab-Feature für die physische Realität zu implementieren
 
 ## Steuerung
 
