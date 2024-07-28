@@ -3,11 +3,6 @@
 ## Projektbeschreibung
 Das FurPro-Projekt ist eine umfassende XR-Softwarelösung, die darauf abzielt, Virtual-Reality-Erlebnisse durch interaktive Möbelstücke zu verbessern. Der Code umfasst Funktionen zur Verwaltung des Verhaltens interaktiver Möbel im XR-Umfeld, sodass Benutzer verschiedene Möbelstücke im virtuellen Raum auswählen, bewegen und damit interagieren können. Durch die Nutzung dieses Codes können Benutzer Möbelstücke dynamisch platzieren und anpassen, wodurch sie ihre XR-Erfahrung personalisieren und die Immersion im virtuellen Umfeld erhöhen.
 
-## Features
-- **Interaktives Möbelmenü**: Benutzer können das Möbelmenü anzeigen, Möbelstücke auswählen und diese im virtuellen Raum platzieren und anpassen.
-- **XR Interaction Toolkit und XR Foundation**: Diese Tools sind integriert, um eine nahtlose Interaktion im XR-Umfeld zu ermöglichen.
-- **Optimierte Shader-Graph-Einstellungen**: Diese verbessern die Render-Effizienz und ermöglichen die Erstellung benutzerdefinierter Shader, um das visuelle Erlebnis zu bereichern.
-- **Interaktionsmethoden**: Unterstützung für Controller- und Hand-Interaktionen zur Steuerung und Platzierung der Möbelstücke.
 
 ## Steuerung
 
@@ -30,20 +25,12 @@ Das FurPro-Projekt ist eine umfassende XR-Softwarelösung, die darauf abzielt, V
 - XR Foundation C#
 - Furniture Assets
 
-## Installation und Nutzung
-1. Klonen Sie das Repository: `git clone <repository-url>`
-2. Öffnen Sie das Projekt in Unity.
-3. Stellen Sie sicher, dass alle benötigten Pakete und Abhängigkeiten installiert sind.
-4. Starten Sie das Projekt und nutzen Sie die oben beschriebenen Steuerungsmethoden, um interaktiv Möbel im XR-Umfeld zu platzieren und anzupassen.
-
 ## Beitrag
 Beiträge zu diesem Projekt sind willkommen. Bitte öffnen Sie einen Pull-Request oder erstellen Sie ein Issue, um Verbesserungen oder Fehler zu diskutieren.
 
 ## Lizenz
 Dieses Projekt ist unter der MIT-Lizenz lizenziert. Weitere Informationen finden Sie in der LICENSE-Datei.
 
-## Kontakt
-Bei Fragen oder Unterstützung wenden Sie sich bitte an.
 
 ---
 
