@@ -26,7 +26,10 @@ Das FurPro-Projekt ist eine umfassende XR-Softwarelösung, die darauf abzielt, V
 - Furniture Assets
 
 ## Beitrag
-Beiträge zu diesem Projekt sind willkommen. Bitte öffnen Sie einen Pull-Request oder erstellen Sie ein Issue, um Verbesserungen oder Fehler zu diskutieren.
+- Dieses Projekt wurde collaborativ von Ahmed Abouismail und Hieu Tran Minh erstellt.
+  Beide Mitglieder haben nach Packages recherchiert, die für das Projekt von bedeutung sein können und sind fundig geworden, dass OVR SDK und Meta XR All-in-One SDK essenzielle   Funktionen veraltet sind.
+- Ahmed übernahm die Aufgabe das Menu zu erstellen
+- Hieu hat versucht ein Messstab-Feature für die physische Realität zu implementieren
 
 ## Lizenz
 Dieses Projekt ist unter der MIT-Lizenz lizenziert. Weitere Informationen finden Sie in der LICENSE-Datei.
