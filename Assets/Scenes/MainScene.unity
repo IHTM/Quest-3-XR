@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -317,7 +317,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0, y: 0}
+  m_AnchoredPosition: {x: -0, y: 126.230804}
   m_SizeDelta: {x: 18.82, y: 326.23}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &122651577
@@ -841,8 +841,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -146, y: 0}
-  m_SizeDelta: {x: 100, y: 67.12}
+  m_AnchoredPosition: {x: -143.9, y: -17.6}
+  m_SizeDelta: {x: 81.94, y: 69.72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &531503631
 MonoBehaviour:
@@ -2232,6 +2232,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7990873191231833673, guid: 5eccbf4be2c00e94689ee8062e4e7276,
         type: 3}
+      propertyPath: field of view
+      value: 67
+      objectReference: {fileID: 0}
+    - target: {fileID: 7990873191231833673, guid: 5eccbf4be2c00e94689ee8062e4e7276,
+        type: 3}
       propertyPath: m_BackGroundColor.b
       value: 0
       objectReference: {fileID: 0}
@@ -2265,11 +2270,19 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8733093507751517971, guid: 5eccbf4be2c00e94689ee8062e4e7276,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 871263480}
+    - targetCorrespondingSourceObject: {fileID: 8733093507751517971, guid: 5eccbf4be2c00e94689ee8062e4e7276,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 871263452}
     - targetCorrespondingSourceObject: {fileID: 8733093507751517971, guid: 5eccbf4be2c00e94689ee8062e4e7276,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 871263464}
+    - targetCorrespondingSourceObject: {fileID: 8733093507751517971, guid: 5eccbf4be2c00e94689ee8062e4e7276,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 871263473}
     - targetCorrespondingSourceObject: {fileID: 7990873191231833679, guid: 5eccbf4be2c00e94689ee8062e4e7276,
         type: 3}
       insertIndex: -1
@@ -2422,6 +2435,41 @@ MonoBehaviour:
   planeManager: {fileID: 871263453}
   playerCamera: {fileID: 871263447}
   spawnDistance: 1
+--- !u!114 &871263473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871263450}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11ef989c55cf14ee0bb1dbb8f22cff39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aRRaycastManager: {fileID: 871263480}
+  toggleMeasureTool: {fileID: -537251095019503087, guid: c348712bda248c246b8c49b3db54643f,
+    type: 3}
+  pointPrefab: {fileID: 7560748132956457126, guid: 50b0d3f01fa4a2c42a82e6cde2c3f332,
+    type: 3}
+  rightController: {fileID: 1550360851}
+  distanceText: {fileID: 5247493240414749226, guid: e99b97fd8e64bf346a44db5f33becdd5,
+    type: 3}
+  distanceLine: {fileID: 4264744466012857749, guid: 4c371c22dc39f4bdd87a62e5cc8365a4,
+    type: 3}
+--- !u!114 &871263480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871263450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa17d122634046b4a8e23048891fafc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RaycastPrefab: {fileID: 0}
 --- !u!1 &885459786
 GameObject:
   m_ObjectHideFlags: 0
@@ -2436,7 +2484,7 @@ GameObject:
   - component: {fileID: 885459788}
   - component: {fileID: 885459787}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4276,6 +4324,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1491989549}
   m_CullTransparentMesh: 1
+--- !u!4 &1550360851 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7990873191126656719, guid: 5eccbf4be2c00e94689ee8062e4e7276,
+    type: 3}
+  m_PrefabInstance: {fileID: 871263446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1604203736
 GameObject:
   m_ObjectHideFlags: 0
